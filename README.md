@@ -1,5 +1,5 @@
 # HexagonalSkeleton
-- Arquitectura de capas basada en clean code.
+# Arquitectura de capas.
 - Application: Orquestador de la aplicación.
 - Domain: Contiene la lógica del dominio del negocio.
 - Infrastructure: Contiene la arquitectura base (Acceso a datos)
