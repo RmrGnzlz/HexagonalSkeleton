@@ -7,6 +7,7 @@ using Application.Http.Requests;
 using Application.Http.Responses;
 using Application.Services;
 using Domain.Contract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,7 @@ namespace WebApi.Controllers
             _userService = new UserService(unitOfWork);
         }
 
+        [AllowAnonymous]
         public ActionResult<Response<LoginUserResponse>> Login(LoginUserRequest request)
         {
             var response = _userService.LoginUser(request);
