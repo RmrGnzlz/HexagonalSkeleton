@@ -26,7 +26,7 @@ namespace WebApi.Controllers
             _userService = new UserService(unitOfWork);
         }
 
-        [AllowAnonymous]
+        [HttpGet("Auth")]
         public ActionResult<Response<LoginUserResponse>> Login(LoginUserRequest request)
         {
             var response = _userService.LoginUser(request);
