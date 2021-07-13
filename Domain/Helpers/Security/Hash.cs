@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure.Encrypt
+namespace Domain.Helpers.Security
 {
     public static class Hash
     {
@@ -9,9 +9,8 @@ namespace Infrastructure.Encrypt
         {
             var sha256 = SHA256.Create();
             var encoding = new ASCIIEncoding();
-            byte[] stream = null;
             var sb = new StringBuilder();
-            stream = sha256.ComputeHash(encoding.GetBytes(str));
+            var stream = sha256.ComputeHash(encoding.GetBytes(str));
             foreach (var t in stream)
                 sb.AppendFormat("{0:x2}", t);
             return sb.ToString();

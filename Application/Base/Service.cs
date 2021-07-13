@@ -3,7 +3,11 @@ using Domain.Contract;
 
 namespace Application.Base
 {
-    public class Service<T> : BaseService, IService<T> where T : BaseEntity
+    public abstract class BaseService
+    {
+        
+    }
+    public abstract class Service<T> : BaseService, IService<T> where T : BaseEntity
     {
         protected readonly IUnitOfWork UnitOfWork;
 
@@ -11,10 +15,5 @@ namespace Application.Base
         {
             UnitOfWork = unitOfWork;
         }
-    }
-
-    public abstract class BaseService
-    {
-        
     }
 }

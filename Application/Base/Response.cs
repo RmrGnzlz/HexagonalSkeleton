@@ -3,7 +3,7 @@ using System.Net;
 
 namespace Application.Base
 {
-    public abstract class BaseResponse
+    public abstract class BaseResponse : IResponse
     {
         public string Message { get; set; }
         public HttpStatusCode Code { get; set; }
@@ -14,5 +14,13 @@ namespace Application.Base
     public class Response<T> : BaseResponse, IResponse<T>
     {
         public T Data { get; set; }
+
+        public Response(string message, HttpStatusCode statusCode, bool status, T data = default)
+        {
+            Message = message;
+            Code = statusCode;
+            State = status;
+            Data = data;
+        }
     }
 }

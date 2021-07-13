@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Net;
 using Application.Base;
 using Application.Http.Requests;
 using Application.Http.Responses;
 using Domain.Contract;
 using Domain.Entities;
+using Domain.Helpers.Security;
 using Domain.Repositories;
-using Infrastructure.Encrypt;
 
 namespace Application.Services
 {
@@ -18,25 +19,33 @@ namespace Application.Services
             _userRepository = unitOfWork.UserRepository;
         }
 
-        public Response<LoginUserResponse> LoginUser(LoginUserRequest request)
+        public IResponse<LoginUserResponse> LoginUser(LoginUserRequest request)
         {
-            // TODO: User authentication code
-            var user = _userRepository.FindFirstOrDefault(x => x.Username == request.Username && x.Password == Hash.GetSha256(request.Password));
-            // TODO: More code here
-            throw new NotImplementedException();
+            var user = _userRepository.FindFirstOrDefault(x =>
+                x.Username == request.Username && x.Password == Hash.GetSha256(request.Password));
+            if (user is null)
+            {
+                return new Response<LoginUserResponse>("User not found", HttpStatusCode.NoContent, false);
+            }
+
+            return new Response<LoginUserResponse>("Ok", HttpStatusCode.OK, true,
+                new LoginUserResponse(user, string.Empty));
         }
 
-        public Response<CreateUserResponse> CreateUser(CreateUserRequest request)
+        public IResponse<CreateUserResponse> CreateUser(CreateUserRequest request)
         {
-            // TODO: User creation code
             var user = new User
             {
                 Username = request.Username,
                 Password = Hash.GetSha256(request.Password)
             };
             _userRepository.Add(user);
-            // TODO: More code here
-            throw new NotImplementedException();
+            if (UnitOfWork.Commit() > 0)
+            {
+                return new Response<CreateUserResponse>("Ok", HttpStatusCode.OK, true, new CreateUserResponse(user));
+            }
+
+            return new Response<CreateUserResponse>("User not created", HttpStatusCode.InternalServerError, false);
         }
     }
 }

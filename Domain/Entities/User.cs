@@ -7,5 +7,6 @@ namespace Domain.Entities
         public string Username { get; set; }
         public string Password { get; set; }
         public string RememberPassword { get; set; }
+        public string RememberToken { get; set; }
     }
 }
